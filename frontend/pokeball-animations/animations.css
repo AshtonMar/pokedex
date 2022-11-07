@@ -1,0 +1,23 @@
+.no_animation {
+	animation: none;
+}
+
+/* Pokeball-button_flash */
+.button_flash {
+	transition: all 0.5s;
+	transition-timing-function: ease-in-out;
+	animation: button_flash 0.8s infinite;
+}
+
+@keyframes button_flash {
+	from {
+		background-color: white;
+	}
+
+	to {
+		background-color: rgb(251, 0, 0);
+		box-shadow: 0px 0px 30px 10px rgba(255, 0, 0, 0.53);
+	}
+}
+
+/* END */

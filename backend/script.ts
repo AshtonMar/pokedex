@@ -1,66 +1,64 @@
-let i = 0;
-let currentIndex = 0;
-const pokemon_heading = document.getElementById("pokemon-heading")
-const base_URL = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
-const txt = "Gotta Catch'em All";
-const speed = 150;
-
-function typeWriter() {
-	if (i < txt.length) {
-		pokemon_heading.innerHTML += txt.charAt(i);
-		i++;
-		setTimeout(typeWriter, speed);
+// Animation activation to be worked on later.
+const animations: any[] = [
+	{
+		animation_name: "no_animation",
+		// animation_activate: false
+	},
+	{
+		animation_name: "button_flash",
+		// animation_activate: false
+	},
+	{
+		animation_name: "open_pokeball",
+		// animation_activate: false
 	}
+]
+
+let currentIndex: number = 0;
+const base_URL: string = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+
+function pokeballAnimationControls() {
+	let current_animation = animations[0]
+
+	const pokeball_btn = document.getElementById("btn") as HTMLElement || undefined;
+	pokeball_btn.className = animations[current_animation];
 }
 
-// Function to fetch a list of pokemon
-function getAllPokemon(url) {
-	fetch(url)
-		// Convert data from JSON
+function getAllPokemon(api_url: string) {
+	fetch(api_url)
 		.then((response) => response.json())
-		//Stuff to do with data
 		.then((data) => {
-			chooseYourPokemon(data["results"])
+			const pokemon_info: any = chooseYourPokemon(data["results"]);
+			if (!pokemon_info)
+				return;
+
+			fetch(pokemon_info["url"])
+				.then((response) => response.json())
+				.then((data) => {
+					displayPokeInfo(pokemon_info["name"], data);
+				});
 		});
 }
 
-function chooseYourPokemon(pokemons) {
+function chooseYourPokemon(pokemons: string[]): string | undefined {
+	if (currentIndex === 0)
+		return pokemons[currentIndex];
+
 	window.addEventListener("keyup", (key) => {
-		if (currentIndex === 0)
-			displayPokeInfo(pokemons[currentIndex]);
-
 		if (currentIndex > 0) {
-			if (key["code"] === "ArrowRight") {
+			if (key["code"] === "ArrowRight")
 				currentIndex = currentIndex + 1
-			}
 
-			if (key["code"] === "ArrowLeft") {
+			if (key["code"] === "ArrowLeft")
 				currentIndex = currentIndex - 1
-			}
 
-			displayPokeInfo(pokemons[currentIndex]);
+			return pokemons[currentIndex]
 		}
 	})
 }
 
-// Function a pokemon's information
-function getPokemon(pokemon_url) {
-	let poke_info = [];
-	fetch(pokemon_url)
-		.then((response) => response.json())
-		.then((data) => {
-			poke_info = data;
-		});
-	return poke_info
+function displayPokeInfo(pokemon_name: string, pokemon_infomation: string) {
+	console.log(pokemon_name, pokemon_infomation);
 }
 
-
-function displayPokeInfo(pokemon_infomation) {
-	const pokemon_image = document.getElementById("pokemon-image");
-	const pokemon_info = document.getElementById("pokemon-id");
-	console.log(getPokemon(pokemon_infomation["url"]));
-}
-
-// Get pokemon values.
 getAllPokemon(base_URL);
-typeWriter();
