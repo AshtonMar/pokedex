@@ -1,0 +1,60 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	background-color: black;
+}
+
+/* Pokeball Styling */
+.pokeball-part {
+	height: 150px;
+	width: 300px;
+	border: 2px solid black;
+}
+
+#pokeball-top {
+	background-color: red;
+	border-radius: 12rem 12rem 0rem 0rem;
+}
+
+#pokeball-mid {
+	background-color: black;
+	height: 25px;
+	border: none;
+}
+
+#pokeball-bottom {
+	background-color: white;
+	border-radius: 0rem 0rem 12rem 12rem;
+}
+
+#pokeball-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	background-color: white;
+	z-index: 999;
+	height: 125px;
+	width: 125px;
+	border-radius: 100%;
+	border: 15px solid black;
+}
+
+#btn {
+	height: 50px;
+	width: 50px;
+	border-radius: 100%;
+	border: 2px solid black;
+	cursor: pointer;
+}
+
+/* END */
