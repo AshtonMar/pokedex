@@ -21,3 +21,44 @@
 }
 
 /* END */
+
+/* Pokecard-show_info */
+.show_info {
+	transition: all 0.5s;
+	transition-timing-function: ease-in-out;
+}
+
+@keyframes show_info {
+	from {
+		opacity: 0;
+		height: 0%;
+		width: 0%;
+	}
+
+	to {
+		opacity: 1;
+		height: 40%;
+		width: 350px;
+	}
+}
+
+/* END */
+
+/* NextBtn-rotate_load */
+.rotate_load {
+	transition: all 0.5s;
+	transition-timing-function: ease-in-out;
+	animation: rotate_load 0.5s infinite;
+}
+
+@keyframes show_info {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* END */
