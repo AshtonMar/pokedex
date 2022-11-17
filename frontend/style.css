@@ -42,14 +42,14 @@ body {
 	justify-content: center;
 	position: absolute;
 	background-color: white;
-	z-index: 990;
+	z-index: 500;
 	height: 125px;
 	width: 125px;
 	border-radius: 100%;
 	border: 15px solid black;
 }
 
-#btn {
+#pokeball-btn-center {
 	height: 50px;
 	width: 50px;
 	border-radius: 100%;
@@ -60,54 +60,49 @@ body {
 /* END */
 
 /* Pokemon info card */
-#pokemon-card {
+#pokemon-info-card {
 	display: flex;
 	align-items: center;
-	flex-direction: column;
+	justify-content: center;
+	flex-direction: row;
 	position: absolute;
 	background-color: white;
 	z-index: 999;
 	border-radius: 5px;
-	width: 350px;
+	height: 600px;
+	width: 800px;
 }
 
-#pokemon-image {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
+#pokemon-sprite {
 	width: 100%;
-	height: 250px;
-	background-color: black;
-	border: 3px solid white;
-	border-radius: 5px;
+	height: 100%;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
 }
 
-#pokemon-image img {
-	width: 250px;
-	height: 200px;
+#pokemon-sprite img {
+	width: 100%;
+	height: 100%;
 	object-fit: cover;
 }
 
-#find-pokemon {
+#pokedex-search {
 	position: absolute;
-	top: 0;
-	left: 0;
-	margin: 15px;
+	top: 30px;
 	padding: 10px;
-	border-radius: 2px;
 	width: 80%;
-	border: none;
-	border-radius: 20px;
+	border-radius: 5px;
+	border: 2px solid gray;
+	background-color: white;
 }
 
-#find-pokemon:focus {
+#pokedex-search:focus {
 	outline: none;
-	border: none;
 }
 
 #pokemon-info {
 	width: 100%;
+	height: 100%;
 	display: flex;
 	flex-direction: row;
 	padding: 10px;
@@ -125,62 +120,6 @@ body {
 
 .group p {
 	margin-block: 5px;
-}
-
-/* END */
-
-/* Next Btn */
-#next-btn {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding: 0px;
-	margin: 20px;
-	cursor: pointer;
-}
-
-.pokeball-part-small {
-	height: 10px;
-	width: 20px;
-}
-
-#pokeball-top-small {
-	background-color: red;
-	border-radius: 12rem 12rem 0rem 0rem;
-}
-
-#pokeball-mid-small {
-	background-color: black;
-	height: 5px;
-}
-
-#pokeball-bottom-small {
-	background-color: white;
-	border-radius: 0rem 0rem 12rem 12rem;
-}
-
-#pokeball-btn-small {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: absolute;
-	background-color: white;
-	z-index: 990;
-	height: 10px;
-	width: 10px;
-	border-radius: 100%;
-	border: 1px solid black;
-}
-
-#btn-small {
-	height: 5px;
-	width: 5px;
-	border-radius: 100%;
-	border: 1px solid black;
 }
 
 /* END */

@@ -6,7 +6,7 @@
 .button_flash {
 	transition: all 0.5s;
 	transition-timing-function: ease-in-out;
-	animation: button_flash 0.8s infinite;
+	animation: button_flash 0.4s infinite;
 }
 
 @keyframes button_flash {
@@ -55,37 +55,20 @@
 
 /* Pokecard-show_info */
 .show_info {
-	transition: all 0.5s;
+	transition: all 0.8s;
 	transition-timing-function: ease-in-out;
-	animation: show_info 0.5s forwards;
+	animation: show_info 1s forwards;
 }
 
 @keyframes show_info {
 	from {
 		opacity: 0;
+		z-index: -1;
 	}
 
 	to {
 		opacity: 1;
-	}
-}
-
-/* END */
-
-/* NextBtn-rotate_load */
-.rotate_load {
-	transition: all 0.5s;
-	transition-timing-function: ease-in-out;
-	animation: rotate_load 0.5s infinite;
-}
-
-@keyframes rotate_load {
-	from {
-		transform: rotate(0deg);
-	}
-
-	to {
-		transform: rotate(360deg);
+		z-index: 999;
 	}
 }
 

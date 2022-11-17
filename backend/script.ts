@@ -1,9 +1,32 @@
-let currentIndex: number = 0;
-let evolveIndex: number = 0;
 const base_URL: string = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+let initialPokemonName: string = "charizard";
 
-function pokeballAnimationControls() {
-	const pokeball_btn = document.getElementById("btn") as HTMLElement || undefined;
+function createPokemonCard(pokemon_information: object): object {
+	const pokemon_card = `
+		<section id="pokemon-info-card" class="no_animation">
+			<div id="pokemon-sprite">
+				<img id="poke-img" src="${pokemon_information}" alt="poke-img">
+			</div>
+			<input id="pokedex-search" placeholder="Pokemon Name..." type="text">
+			</div>
+			<div id="pokemon-info">${pokemon_information}</div>
+		</section>`
+
+	document.body.innerHTML += pokemon_card;
+
+	const poke_card = document.getElementById("pokemon-info-card") as HTMLElement || undefined;
+
+	if (poke_card == undefined)
+		return { "cardState": false };
+
+	poke_card.style.opacity = "0";
+	poke_card.style.zIndex = "-1";
+
+	return { "DOMElement": poke_card, "cardState": true };
+}
+
+function displayPokemonCard(): void {
+	const pokeball_btn = document.getElementById("pokeball-btn-center") as HTMLElement || undefined;
 	const pokeball = document.getElementById("pokeball-body") as HTMLElement || undefined;
 
 	pokeball_btn.addEventListener("click", () => {
@@ -11,95 +34,65 @@ function pokeballAnimationControls() {
 		pokeball.className = "move_pokeball";
 
 		setTimeout(() => {
-			pokeball_btn.className = "no_animation";
-			pokeball.className = "no_animation";
 			getAllPokemon(base_URL);
-		}, 2000);
+			const card_exist: any = createPokemonCard({});
+
+			if (card_exist && card_exist["cardState"]) {
+				let card = card_exist["DOMElement"] as HTMLElement;
+				card.className = "show_info"
+
+			} else {
+				return;
+			}
+
+		}, 3000);
+
 	})
 }
 
-function getAllPokemon(api_url: string) {
+function getAllPokemon(api_url: string): void {
 	fetch(api_url)
 		.then((response) => response.json())
 		.then((data) => {
-			const pokemon_info: any = chooseYourPokemon(data["results"]);
-			if (!pokemon_info)
-				return;
-
-			fetch(pokemon_info["url"])
-				.then((response) => response.json())
-				.then((data) => {
-					displayPokeInfo(data);
-				});
+			data["results"].find((pokemon: { [x: string]: string; }) => {
+				if (pokemon["name"] === initialPokemonName)
+					yourPokemon(pokemon);
+			})
 		});
 }
 
-function chooseYourPokemon(pokemons: string[]): string | undefined {
-	return pokemons[currentIndex];
+function yourPokemon(pokemon: { [x: string]: string; }): object {
+	const pokemon_url = pokemon["url"];
+
+	const pokemon_information: any = {
+		id: 0,
+		order: 0,
+		name: "Ashton Martin",
+		sprites_src: "frontend/images/pokeball-favicon.png",
+		abilities: [],
+		stats: [],
+		types: [],
+		moves: []
+	}
+
+	fetch(pokemon_url)
+		.then((response) => response.json())
+		.then((pokemon_data) => {
+			if (pokemon_data)
+				return pokemon_information;
+
+			pokemon_information["name"] = pokemon["name"];
+			pokemon_information["id"] = pokemon_data["id"];
+			pokemon_information["order"] = pokemon_data["order"];
+			pokemon_information["sprites_src"] = pokemon_data["sprites"]["front_default"];
+			pokemon_information["abilities"] = pokemon_data["abilities"];
+			pokemon_information["stats"] = pokemon_data["stats"];
+			pokemon_information["types"] = pokemon_data["types"];
+			pokemon_information["moves"] = pokemon_data["moves"];
+
+		});
+
+	return pokemon_information;
 }
 
-function displayPokeInfo(pokemon_infomation: any) {
-	if (!pokemon_infomation)
-		return;
-
-	const pokemon_card = `
-		<section id="pokemon-card" class="no_animation">
-			<div id="pokemon-image">
-				<div id="next-btn" class="no_animation">
-					<!-- Pokeball Btn -->
-					<div id="pokeball-btn-small">
-						<div id="btn-small" class="no_animation">
-				
-						</div>
-					</div>
-					<!-- END -->
-					<!-- Pokeball Structure -->
-					<section id="pokeball-top-small" class="pokeball-part-small">
-					</section>
-					<section id="pokeball-mid-small" class="pokeball-part-small">
-					</section>
-					<section id="pokeball-bottom-small" class="pokeball-part-small">
-					</section>
-					<!-- END -->
-				</div>
-				<img id="poke-img" src="${pokemon_infomation["sprites"]["front_default"]}" alt="poke-img">
-				<input id="find-pokemon" placeholder="Find Pokemon..." type="text">
-			</div>
-			<div id="pokemon-info">
-				<div class="group one">
-					<p>Name: ${pokemon_infomation["name"]}</p>
-					<p>Name: ${pokemon_infomation["name"]}</p>
-					<p>Name: ${pokemon_infomation["name"]}</p>
-					<p>Name: ${pokemon_infomation["name"]}</p>
-					<p>Name: ${pokemon_infomation["name"]}</p>
-				</div>
-				<div class="group two">
-					<p>Name: ${pokemon_infomation["name"]}</p>
-					<p>Name: ${pokemon_infomation["name"]}</p>
-					<p>Name: ${pokemon_infomation["name"]}</p>
-					<p>Name: ${pokemon_infomation["name"]}</p>
-					<p>Name: ${pokemon_infomation["name"]}</p>
-				</div>
-			</div>
-		</section>`
-
-	document.body.innerHTML = pokemon_card
-
-	const poke_card = document.getElementById("pokemon-card");
-	if (!poke_card)
-		return;
-
-	poke_card.style.animation = "show_info 2s forwards";
-
-	const next_pokemon_btn = document.getElementById("next-btn") as HTMLButtonElement || undefined;
-	next_pokemon_btn.addEventListener("click", () => {
-		currentIndex = currentIndex + 3
-		next_pokemon_btn.className = "rotate_load";
-		setTimeout(() => {
-			next_pokemon_btn.className = "no_animation";
-			getAllPokemon(base_URL);
-		}, 2000);
-	})
-}
-
-pokeballAnimationControls();
+displayPokemonCard();
