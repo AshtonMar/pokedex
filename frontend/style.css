@@ -10,7 +10,14 @@ body {
 	align-items: center;
 	justify-content: center;
 	height: 100vh;
-	background-color: black;
+}
+
+#video-background {
+	border: none;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: -1;
 }
 
 /* Pokeball Styling */
@@ -22,6 +29,8 @@ body {
 #pokeball-top {
 	background-color: red;
 	border-radius: 12rem 12rem 0rem 0rem;
+	border-top-left-radius: 5px solid black;
+	border-top-right-radius: 5px solid black;
 }
 
 #pokeball-mid {
@@ -65,8 +74,8 @@ body {
 	position: absolute;
 	background-color: white;
 	z-index: 999;
-	opacity: 0;
 	border-radius: 5px;
+	width: 350px;
 }
 
 #pokemon-image {

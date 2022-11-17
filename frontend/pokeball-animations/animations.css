@@ -26,19 +26,16 @@
 .show_info {
 	transition: all 0.5s;
 	transition-timing-function: ease-in-out;
+	animation: show_info 0.5s forwards;
 }
 
 @keyframes show_info {
 	from {
 		opacity: 0;
-		height: 0%;
-		width: 0%;
 	}
 
 	to {
 		opacity: 1;
-		height: 40%;
-		width: 350px;
 	}
 }
 
@@ -51,7 +48,7 @@
 	animation: rotate_load 0.5s infinite;
 }
 
-@keyframes show_info {
+@keyframes rotate_load {
 	from {
 		transform: rotate(0deg);
 	}

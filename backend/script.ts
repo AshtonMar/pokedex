@@ -1,27 +1,17 @@
-// Animation activation to be worked on later.
-const animations: any[] = [
-	{
-		animation_name: "no_animation",
-		// animation_activate: false
-	},
-	{
-		animation_name: "button_flash",
-		// animation_activate: false
-	},
-	{
-		animation_name: "open_pokeball",
-		// animation_activate: false
-	}
-]
-
 let currentIndex: number = 0;
 const base_URL: string = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
 
-function pokeballAnimationControls() {
-	let current_animation = animations[0];
+function playVideo() {
+	const background_video = document.getElementById("video-background") as HTMLVideoElement || undefined;
 
+	if (background_video != undefined)
+		console.log();
+
+	background_video.play()
+}
+
+function pokeballAnimationControls() {
 	const pokeball_btn = document.getElementById("btn") as HTMLElement || undefined;
-	pokeball_btn.className = animations[current_animation];
 
 	pokeball_btn.addEventListener("click", () => {
 		pokeball_btn.className = "button_flash";
@@ -36,7 +26,6 @@ function getAllPokemon(api_url: string) {
 	fetch(api_url)
 		.then((response) => response.json())
 		.then((data) => {
-			console.log(currentIndex);
 			const pokemon_info: any = chooseYourPokemon(data["results"]);
 			if (!pokemon_info)
 				return;
@@ -50,7 +39,6 @@ function getAllPokemon(api_url: string) {
 }
 
 function chooseYourPokemon(pokemons: string[]): string | undefined {
-	console.log(pokemons[currentIndex]);
 	return pokemons[currentIndex];
 }
 
@@ -59,7 +47,7 @@ function displayPokeInfo(pokemon_infomation: any) {
 		return;
 
 	const pokemon_card = `
-		<section id="pokemon-card" class="show_info">
+		<section id="pokemon-card" class="no_animation">
 			<div id="pokemon-image">
 				<div id="next-btn" class="no_animation">
 					<!-- Pokeball Btn -->
@@ -78,7 +66,7 @@ function displayPokeInfo(pokemon_infomation: any) {
 					</section>
 					<!-- END -->
 				</div>
-				<img id="poke-img" src="${pokemon_infomation["sprites"]["front_shiny"]}" alt="poke-img">
+				<img id="poke-img" src="${pokemon_infomation["sprites"]["front_default"]}" alt="poke-img">
 			</div>
 			<div id="pokemon-info">
 				<div class="group one">
@@ -106,15 +94,16 @@ function displayPokeInfo(pokemon_infomation: any) {
 
 	poke_card.style.animation = "show_info 2s forwards";
 
-	const next_pokemon_btn = document.getElementById("next-btn") as HTMLElement || undefined;
-	next_pokemon_btn.addEventListener("click", () => {
-		currentIndex = currentIndex + 1
-		next_pokemon_btn.className = "rotate_load";
-		setTimeout(() => {
-			next_pokemon_btn.className = "no_animation";
-			getAllPokemon(base_URL);
-		}, 2000);
-	})
+	// 	const next_pokemon_btn = document.getElementById("next-btn") as HTMLElement || undefined;
+	// 	next_pokemon_btn.addEventListener("click", () => {
+	// 		currentIndex = currentIndex + 1
+	// 		next_pokemon_btn.className = "rotate_load";
+	// 		setTimeout(() => {
+	// 			next_pokemon_btn.className = "no_animation";
+	// 			getAllPokemon(base_URL);
+	// 		}, 2000);
+	// 	})
 }
 
 pokeballAnimationControls();
+playVideo();
