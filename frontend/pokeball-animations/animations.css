@@ -22,6 +22,37 @@
 
 /* END */
 
+/* Pokeball-move_pokeball */
+.move_pokeball {
+	transition: all 1.5s;
+	transition-timing-function: ease-in-out;
+	animation: move_pokeball 2s forwards;
+}
+
+@keyframes move_pokeball {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	25% {
+		transform: rotate(2deg);
+	}
+
+	50% {
+		transform: rotate(0deg);
+	}
+
+	75% {
+		transform: rotate(-2deg);
+	}
+
+	100% {
+		transform: rotate(0deg);
+	}
+}
+
+/* END */
+
 /* Pokecard-show_info */
 .show_info {
 	transition: all 0.5s;

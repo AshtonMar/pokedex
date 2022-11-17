@@ -1,22 +1,18 @@
 let currentIndex: number = 0;
+let evolveIndex: number = 0;
 const base_URL: string = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
-
-function playVideo() {
-	const background_video = document.getElementById("video-background") as HTMLVideoElement || undefined;
-
-	if (background_video != undefined)
-		console.log();
-
-	background_video.play()
-}
 
 function pokeballAnimationControls() {
 	const pokeball_btn = document.getElementById("btn") as HTMLElement || undefined;
+	const pokeball = document.getElementById("pokeball-body") as HTMLElement || undefined;
 
 	pokeball_btn.addEventListener("click", () => {
 		pokeball_btn.className = "button_flash";
+		pokeball.className = "move_pokeball";
+
 		setTimeout(() => {
 			pokeball_btn.className = "no_animation";
+			pokeball.className = "no_animation";
 			getAllPokemon(base_URL);
 		}, 2000);
 	})
@@ -67,6 +63,7 @@ function displayPokeInfo(pokemon_infomation: any) {
 					<!-- END -->
 				</div>
 				<img id="poke-img" src="${pokemon_infomation["sprites"]["front_default"]}" alt="poke-img">
+				<input id="find-pokemon" placeholder="Find Pokemon..." type="text">
 			</div>
 			<div id="pokemon-info">
 				<div class="group one">
@@ -86,7 +83,7 @@ function displayPokeInfo(pokemon_infomation: any) {
 			</div>
 		</section>`
 
-	document.body.innerHTML += pokemon_card
+	document.body.innerHTML = pokemon_card
 
 	const poke_card = document.getElementById("pokemon-card");
 	if (!poke_card)
@@ -94,16 +91,15 @@ function displayPokeInfo(pokemon_infomation: any) {
 
 	poke_card.style.animation = "show_info 2s forwards";
 
-	// 	const next_pokemon_btn = document.getElementById("next-btn") as HTMLElement || undefined;
-	// 	next_pokemon_btn.addEventListener("click", () => {
-	// 		currentIndex = currentIndex + 1
-	// 		next_pokemon_btn.className = "rotate_load";
-	// 		setTimeout(() => {
-	// 			next_pokemon_btn.className = "no_animation";
-	// 			getAllPokemon(base_URL);
-	// 		}, 2000);
-	// 	})
+	const next_pokemon_btn = document.getElementById("next-btn") as HTMLButtonElement || undefined;
+	next_pokemon_btn.addEventListener("click", () => {
+		currentIndex = currentIndex + 3
+		next_pokemon_btn.className = "rotate_load";
+		setTimeout(() => {
+			next_pokemon_btn.className = "no_animation";
+			getAllPokemon(base_URL);
+		}, 2000);
+	})
 }
 
 pokeballAnimationControls();
-playVideo();
