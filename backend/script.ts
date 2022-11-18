@@ -7,7 +7,6 @@ function createPokemonCard(pokemon_information: { [x: string]: string }): object
 
 	if (!pokemon_information)
 		return { "cardState": false };
-	let index = 0;
 
 	const pokemon_card = `
 		<section id="pokemon-info-card" class="no_animation">
