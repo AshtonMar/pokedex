@@ -1,15 +1,21 @@
 "use strict";
 const base_URL = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
 let initialPokemonName = "charizard";
+let pokemon_information;
 function createPokemonCard(pokemon_information) {
+    console.log(pokemon_information);
+    if (!pokemon_information)
+        return { "cardState": false };
     const pokemon_card = `
 		<section id="pokemon-info-card" class="no_animation">
 			<div id="pokemon-sprite">
-				<img id="poke-img" src="${pokemon_information}" alt="poke-img">
+				<img id="poke-img" src="${pokemon_information["sprites_src"]}" alt="poke-img">
 			</div>
 			<input id="pokedex-search" placeholder="Pokemon Name..." type="text">
 			</div>
-			<div id="pokemon-info">${pokemon_information}</div>
+			<div id="pokemon-info">
+				${pokemon_information["sprites_src"]}
+			</div>
 		</section>`;
     document.body.innerHTML += pokemon_card;
     const poke_card = document.getElementById("pokemon-info-card") || undefined;
@@ -27,14 +33,6 @@ function displayPokemonCard() {
         pokeball.className = "move_pokeball";
         setTimeout(() => {
             getAllPokemon(base_URL);
-            const card_exist = createPokemonCard({});
-            if (card_exist && card_exist["cardState"]) {
-                let card = card_exist["DOMElement"];
-                card.className = "show_info";
-            }
-            else {
-                return;
-            }
         }, 3000);
     });
 }
@@ -43,14 +41,16 @@ function getAllPokemon(api_url) {
         .then((response) => response.json())
         .then((data) => {
         data["results"].find((pokemon) => {
-            if (pokemon["name"] === initialPokemonName)
+            if (pokemon["name"] === initialPokemonName) {
+                ;
                 yourPokemon(pokemon);
+            }
         });
     });
 }
 function yourPokemon(pokemon) {
     const pokemon_url = pokemon["url"];
-    const pokemon_information = {
+    const pokemon_information_obj = {
         id: 0,
         order: 0,
         name: "Ashton Martin",
@@ -63,17 +63,33 @@ function yourPokemon(pokemon) {
     fetch(pokemon_url)
         .then((response) => response.json())
         .then((pokemon_data) => {
-        if (pokemon_data)
-            return pokemon_information;
-        pokemon_information["name"] = pokemon["name"];
-        pokemon_information["id"] = pokemon_data["id"];
-        pokemon_information["order"] = pokemon_data["order"];
-        pokemon_information["sprites_src"] = pokemon_data["sprites"]["front_default"];
-        pokemon_information["abilities"] = pokemon_data["abilities"];
-        pokemon_information["stats"] = pokemon_data["stats"];
-        pokemon_information["types"] = pokemon_data["types"];
-        pokemon_information["moves"] = pokemon_data["moves"];
+        if (!pokemon_data) {
+            pokemon_information = pokemon_information_obj;
+        }
+        else {
+            console.log("Pusing to");
+            pokemon_information_obj["name"] = pokemon["name"];
+            pokemon_information_obj["id"] = pokemon_data["id"];
+            pokemon_information_obj["order"] = pokemon_data["order"];
+            pokemon_information_obj["sprites_src"] = pokemon_data["sprites"]["front_default"];
+            pokemon_information_obj["abilities"] = pokemon_data["abilities"];
+            pokemon_information_obj["stats"] = pokemon_data["stats"];
+            pokemon_information_obj["types"] = pokemon_data["types"];
+            pokemon_information_obj["moves"] = pokemon_data["moves"];
+            pokemon_information = pokemon_information_obj;
+        }
+    })
+        .then(() => {
+        if (pokemon_information != undefined) {
+            const card_exist = createPokemonCard(pokemon_information);
+            if (card_exist && card_exist["cardState"]) {
+                let card = card_exist["DOMElement"];
+                card.className = "show_info";
+            }
+            else {
+                return;
+            }
+        }
     });
-    return pokemon_information;
 }
 displayPokemonCard();
