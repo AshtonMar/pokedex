@@ -3,8 +3,6 @@ let initialPokemonName: string = "charizard";
 let pokemon_information: { [x: string]: string } | undefined;
 
 function createPokemonCard(pokemon_information: { [x: string]: string }): object {
-	console.log(pokemon_information);
-
 	if (!pokemon_information)
 		return { "cardState": false };
 
@@ -17,11 +15,14 @@ function createPokemonCard(pokemon_information: { [x: string]: string }): object
 			</div>
 			<div id="pokemon-info">
 				<h1 id="pokemon-name" class="pokemon-information-item">${pokemon_information["name"]}</h1>
-				<div id="pokemon-types">
+				<h3>Types</h3>
+				<div id="pokemon-types" class="container row">
 				</div>
-				<div id="pokemon-stats">
+				<h3>Stats</h3>
+				<div id="pokemon-stats" class="container column">
 				</div>
-				<div id="pokemon-moves">
+				<h3>Moves</h3>
+				<div id="pokemon-moves" class="container column">
 				</div>
 			</div>
 		</section>`
@@ -35,7 +36,7 @@ function createPokemonCard(pokemon_information: { [x: string]: string }): object
 		for (const move of pokemon_information["moves"]) {
 			const move_name: string = move["move"]["name"];
 
-			const moves_list = `<li class="pokemon-information-item">${move_name}</li>`;
+			const moves_list = `<a href="${move_name}" class="pokemon-information-item">${move_name}</a> /  `;
 
 			move_container.innerHTML += moves_list;
 		}
@@ -47,7 +48,8 @@ function createPokemonCard(pokemon_information: { [x: string]: string }): object
 			const stat_list = `
 				<div id="pokemon-stat">
 					<label for="pokemon-stat">${stat_name}</label>
-					<li class="pokemon-information-item">${base_stat}</li>
+					-
+					<p class="pokemon-information-item">${base_stat}</p>
 				</div>
 			`;
 
@@ -57,7 +59,7 @@ function createPokemonCard(pokemon_information: { [x: string]: string }): object
 		for (const type of pokemon_information["types"]) {
 			const type_name: string = type["type"]["name"];
 
-			const type_list = `<li class="pokemon-information-item">${type_name}</li>`;
+			const type_list = `<p class="pokemon-information-item">${type_name}</p>`;
 
 			type_container.innerHTML += type_list;
 		}
@@ -65,7 +67,7 @@ function createPokemonCard(pokemon_information: { [x: string]: string }): object
 
 	const poke_card = document.getElementById("pokemon-info-card") as HTMLElement || undefined;
 
-	if (poke_card == undefined)
+	if (poke_card.style.opacity === "0" || !poke_card)
 		return { "cardState": false };
 
 	poke_card.style.opacity = "0";
@@ -102,6 +104,9 @@ function getAllPokemon(api_url: string): void {
 }
 
 function yourPokemon(pokemon: { [x: string]: string; }): void {
+	if (!pokemon)
+		return;
+
 	const pokemon_url = pokemon["url"];
 
 	const pokemon_information_obj: any = {
@@ -120,8 +125,6 @@ function yourPokemon(pokemon: { [x: string]: string; }): void {
 			if (!pokemon_data) {
 				pokemon_information = pokemon_information_obj;
 			} else {
-				console.log("Pusing to");
-
 				pokemon_information_obj["name"] = pokemon["name"];
 				pokemon_information_obj["id"] = pokemon_data["id"];
 				pokemon_information_obj["order"] = pokemon_data["order"];
@@ -140,7 +143,6 @@ function yourPokemon(pokemon: { [x: string]: string; }): void {
 				if (card_exist && card_exist["cardState"]) {
 					let card = card_exist["DOMElement"] as HTMLElement;
 					card.className = "show_info"
-
 				} else {
 					return;
 				}
@@ -148,4 +150,27 @@ function yourPokemon(pokemon: { [x: string]: string; }): void {
 		});
 }
 
+function pokemonSearch() {
+	const pokemon_search = document.getElementById("pokedex-search") as HTMLInputElement | undefined;
+
+	if (pokemon_search) {
+		pokemon_search.addEventListener("input", () => {
+			initialPokemonName = pokemon_search.value;
+			console.log("new");
+			window.addEventListener("keypress", (key) => {
+				if (key["key"] === "Enter") {
+					const poke_card = document.getElementById("pokemon-info-card") as HTMLElement || undefined;
+
+					poke_card.style.opacity = "0";
+					poke_card.style.zIndex = "-1";
+
+					displayPokemonCard();
+				}
+			})
+		})
+	}
+
+}
+
 displayPokemonCard();
+pokemonSearch();
