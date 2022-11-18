@@ -6,6 +6,7 @@ function createPokemonCard(pokemon_information) {
     console.log(pokemon_information);
     if (!pokemon_information)
         return { "cardState": false };
+    let index = 0;
     const pokemon_card = `
 		<section id="pokemon-info-card" class="no_animation">
 			<div id="pokemon-sprite">
@@ -14,10 +15,42 @@ function createPokemonCard(pokemon_information) {
 			<input id="pokedex-search" placeholder="Pokemon Name..." type="text">
 			</div>
 			<div id="pokemon-info">
-				${pokemon_information["sprites_src"]}
+				<h1 id="pokemon-name" class="pokemon-information-item">${pokemon_information["name"]}</h1>
+				<div id="pokemon-types">
+				</div>
+				<div id="pokemon-stats">
+				</div>
+				<div id="pokemon-moves">
+				</div>
 			</div>
 		</section>`;
     document.body.innerHTML += pokemon_card;
+    const move_container = document.getElementById("pokemon-moves");
+    const stat_container = document.getElementById("pokemon-stats");
+    const type_container = document.getElementById("pokemon-types");
+    if (move_container && stat_container && type_container) {
+        for (const move of pokemon_information["moves"]) {
+            const move_name = move["move"]["name"];
+            const moves_list = `<li class="pokemon-information-item">${move_name}</li>`;
+            move_container.innerHTML += moves_list;
+        }
+        for (const stat of pokemon_information["stats"]) {
+            const stat_name = stat["stat"]["name"];
+            const base_stat = stat["base_stat"];
+            const stat_list = `
+				<div id="pokemon-stat">
+					<label for="pokemon-stat">${stat_name}</label>
+					<li class="pokemon-information-item">${base_stat}</li>
+				</div>
+			`;
+            stat_container.innerHTML += stat_list;
+        }
+        for (const type of pokemon_information["types"]) {
+            const type_name = type["type"]["name"];
+            const type_list = `<li class="pokemon-information-item">${type_name}</li>`;
+            type_container.innerHTML += type_list;
+        }
+    }
     const poke_card = document.getElementById("pokemon-info-card") || undefined;
     if (poke_card == undefined)
         return { "cardState": false };
@@ -42,7 +75,6 @@ function getAllPokemon(api_url) {
         .then((data) => {
         data["results"].find((pokemon) => {
             if (pokemon["name"] === initialPokemonName) {
-                ;
                 yourPokemon(pokemon);
             }
         });
@@ -55,7 +87,6 @@ function yourPokemon(pokemon) {
         order: 0,
         name: "Ashton Martin",
         sprites_src: "frontend/images/pokeball-favicon.png",
-        abilities: [],
         stats: [],
         types: [],
         moves: []
@@ -72,7 +103,6 @@ function yourPokemon(pokemon) {
             pokemon_information_obj["id"] = pokemon_data["id"];
             pokemon_information_obj["order"] = pokemon_data["order"];
             pokemon_information_obj["sprites_src"] = pokemon_data["sprites"]["front_default"];
-            pokemon_information_obj["abilities"] = pokemon_data["abilities"];
             pokemon_information_obj["stats"] = pokemon_data["stats"];
             pokemon_information_obj["types"] = pokemon_data["types"];
             pokemon_information_obj["moves"] = pokemon_data["moves"];

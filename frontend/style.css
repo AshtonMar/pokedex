@@ -2,6 +2,7 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	font-family: sans-serif;
 }
 
 body {
@@ -11,6 +12,11 @@ body {
 	justify-content: center;
 	height: 100vh;
 	background-color: rgb(0, 0, 0);
+}
+
+h1 {
+	font-size: 30px;
+	margin-block: 10px;
 }
 
 /* Pokeball Styling */
@@ -74,23 +80,30 @@ body {
 }
 
 #pokemon-sprite {
-	width: 100%;
+	display: flex;
+	justify-content: center;
+	width: 60%;
 	height: 100%;
+	padding-top: 100px;
+	border-right: 1px solid black;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 }
 
 #pokemon-sprite img {
-	width: 100%;
-	height: 100%;
+	border-radius: 5px;
+	border: 1px solid black;
+	width: 50%;
+	height: 50%;
 	object-fit: cover;
 }
 
 #pokedex-search {
 	position: absolute;
 	top: 30px;
+	left: 30px;
 	padding: 10px;
-	width: 80%;
+	width: 52%;
 	border-radius: 5px;
 	border: 2px solid gray;
 	background-color: white;
@@ -101,25 +114,12 @@ body {
 }
 
 #pokemon-info {
-	width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: row;
-	padding: 10px;
-	align-self: flex-start;
-	flex-wrap: wrap;
-}
-
-.group {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	padding-block: 20px;
+	width: 40%;
 	height: 100%;
-	width: 50%;
-}
-
-.group p {
-	margin-block: 5px;
+	padding-left: 20px;
 }
 
 /* END */
