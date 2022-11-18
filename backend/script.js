@@ -1,6 +1,6 @@
 "use strict";
 const base_URL = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
-let initialPokemonName = "charizard";
+let initialPokemonName = window.localStorage.getItem("pokemonName");
 let pokemon_information;
 function createPokemonCard(pokemon_information) {
     if (!pokemon_information)
@@ -118,6 +118,7 @@ function yourPokemon(pokemon) {
             if (card_exist && card_exist["cardState"]) {
                 let card = card_exist["DOMElement"];
                 card.className = "show_info";
+                pokemonSearch(card_exist);
             }
             else {
                 return;
@@ -125,22 +126,24 @@ function yourPokemon(pokemon) {
         }
     });
 }
-function pokemonSearch() {
+function pokemonSearch(exists) {
     const pokemon_search = document.getElementById("pokedex-search");
-    if (pokemon_search) {
+    if (pokemon_search && exists["cardState"]) {
         pokemon_search.addEventListener("input", () => {
             initialPokemonName = pokemon_search.value;
-            console.log("new");
             window.addEventListener("keypress", (key) => {
                 if (key["key"] === "Enter") {
                     const poke_card = document.getElementById("pokemon-info-card") || undefined;
                     poke_card.style.opacity = "0";
                     poke_card.style.zIndex = "-1";
-                    displayPokemonCard();
+                    if (window.localStorage.getItem("pokemonName") === "")
+                        initialPokemonName = "charizard";
+                    window.localStorage.setItem("pokemonName", pokemon_search.value);
+                    window.location.reload();
+                    return;
                 }
             });
         });
     }
 }
 displayPokemonCard();
-pokemonSearch();

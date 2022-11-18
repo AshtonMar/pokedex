@@ -1,5 +1,5 @@
 const base_URL: string = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
-let initialPokemonName: string = "charizard";
+let initialPokemonName: any = window.localStorage.getItem("pokemonName");
 let pokemon_information: { [x: string]: string } | undefined;
 
 function createPokemonCard(pokemon_information: { [x: string]: string }): object {
@@ -143,6 +143,8 @@ function yourPokemon(pokemon: { [x: string]: string; }): void {
 				if (card_exist && card_exist["cardState"]) {
 					let card = card_exist["DOMElement"] as HTMLElement;
 					card.className = "show_info"
+
+					pokemonSearch(card_exist);
 				} else {
 					return;
 				}
@@ -150,13 +152,13 @@ function yourPokemon(pokemon: { [x: string]: string; }): void {
 		});
 }
 
-function pokemonSearch() {
+function pokemonSearch(exists: { [x: string]: string }): void {
 	const pokemon_search = document.getElementById("pokedex-search") as HTMLInputElement | undefined;
 
-	if (pokemon_search) {
+	if (pokemon_search && exists["cardState"]) {
 		pokemon_search.addEventListener("input", () => {
-			initialPokemonName = pokemon_search.value;
-			console.log("new");
+			initialPokemonName = pokemon_search.value
+
 			window.addEventListener("keypress", (key) => {
 				if (key["key"] === "Enter") {
 					const poke_card = document.getElementById("pokemon-info-card") as HTMLElement || undefined;
@@ -164,13 +166,16 @@ function pokemonSearch() {
 					poke_card.style.opacity = "0";
 					poke_card.style.zIndex = "-1";
 
-					displayPokemonCard();
+					if (window.localStorage.getItem("pokemonName") === "")
+						initialPokemonName = "charizard";
+
+					window.localStorage.setItem("pokemonName", pokemon_search.value);
+					window.location.reload();
+					return;
 				}
 			})
 		})
 	}
-
 }
 
 displayPokemonCard();
-pokemonSearch();
